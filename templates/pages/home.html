@@ -53,16 +53,13 @@
                 const  newTweet = xhr.response
                 const newTweetJson = JSON.parse(newTweet)
                 const newTweetElement = formatTweetElement(newTweetJson)
-                console.log(newTweetElement)
                 const ogHtml = tweetsContainerElement.innerHTML
                 tweetsContainerElement.innerHTML = newTweetElement + ogHtml
                 myForm.reset()
             }
             else if (xhr.status === 400){
                 const errorJson = xhr.response
-                console.log(errorJson)
                 const contentError = errorJson['content']
-                alert(contentError)
                 let contentErrorMsg;
                 if (contentError){
                     contentErrorMsg = contentError[0]
@@ -76,6 +73,10 @@
                 else {
                     alert("Tru another Error")
                 }
+            }
+            else if (status === 401){
+                alert("You must Login")
+                window.location.href = '/login'
             }
             else if (status == 500){
                 alert("There was an error from server side")
@@ -102,14 +103,11 @@
         xhr.responseType = responseType
         xhr.open(method, url)
         xhr.onload = function() {
-            console.log(xhr.response)
             const serverResponse = xhr.response
             var listedItems = serverResponse.response
             var finalTweetStr = ""
             var i;
             for (i=0; i<listedItems.length; i++){
-                console.log(i)
-                console.log(listedItems[i])
                 var tweetObj = listedItems[i]
                 var currentItem = formatTweetElement(tweetObj)
                 finalTweetStr += currentItem
